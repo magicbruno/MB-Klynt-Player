@@ -6,7 +6,14 @@ Klynt Player is a cross-browser, JavaScript engine to playback rich-media sequen
 
 * [Demo project](http://www.klynt.net/demo/)
 * [klynt.net](http://www.klynt.net)
-* [Github project](http://www.github.com/Klynt/Klynt-Player)
+* [Original Github project](http://www.github.com/Klynt/Klynt-Player)
+
+## Changes
+
+* The player has been aligned with the one distributed with version 3.5.007 of Klynt Editor.
+* A new API has been added that allows you to control a klynt player embedded in an iframe from the page hosting it via Javascript.
+* Now, when the player loading process is complete, the player issues a notification via HTML 5 message api.
+* A customizable stylesheet file has been added in Resouces folder to allow you to customize Klynt Splashscreen via CSS.
 
 ## Used libraries
 

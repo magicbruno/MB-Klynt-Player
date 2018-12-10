@@ -49,7 +49,10 @@
 }
 
 .mejs-klynt .mejs-controls div.mejs-time-rail {
-	padding-top: 9px;
+    padding-top: 9px;
+}
+
+.mejs-klynt .mejs-controls div.mejs-time-rail:last-child {
     padding-right: 28px;
 }
 

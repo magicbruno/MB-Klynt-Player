@@ -91,7 +91,8 @@
         script.type = "text/javascript";
 
         var apiKey = klynt.data.general.mapsKey;
-        script.src = "http://maps.googleapis.com/maps/api/js?key=" + apiKey + "&sensor=false&callback=klynt.menu.renderMaps";
+        var isHTTPS = document.location.protocol == "https:";
+        script.src = (isHTTPS ? "https://" : "http") + "://maps.googleapis.com/maps/api/js?key=" + apiKey + "&sensor=false&callback=klynt.menu.renderMaps";
 
         document.body.appendChild(script);
     };

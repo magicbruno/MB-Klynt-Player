@@ -88,6 +88,18 @@
             return this._data.closeButtonBottom !== undefined ? this._data.closeButtonBottom : klynt.data.general.overlayCloseButtonBottom;
         },
 
+        get closeButtonWidth() {
+            return this._data.closeButtonWidth !== undefined ? this._data.closeButtonWidth : klynt.data.general.overlayCloseButtonWidth;
+        },
+
+        get closeButtonHeight() {
+            return this._data.closeButtonHeight !== undefined ? this._data.closeButtonHeight : klynt.data.general.overlayCloseButtonHeight;
+        },
+
+        get closeButtonImage() {
+            return this._data.closeButtonImage !== undefined ? this._data.closeButtonImage : klynt.data.general.overlayCloseButtonImage;
+        },
+
         // Link to url
         get targetURL() {
             return this._data.targetURL;

@@ -86,9 +86,9 @@ klynt.analytics.trackPageView('miniplayer');
             '<div class="modal-share-buttons">' +
             '<div class="modal-share-buttons-facebook"></div>' +
             '<div class="modal-share-buttons-twitter"></div>' +
-            '<div class="modal-share-buttons-tumblr"></div>' +
-            '<div class="modal-share-buttons-google"></div>' +
-            '<div class="modal-share-buttons-linkedin"></div>' +
+            (klynt.data.share.enableTumblr ? '<div class="modal-share-buttons-tumblr"></div>' : '') +
+            (klynt.data.share.enableGooglePlus ? '<div class="modal-share-buttons-google"></div>' : '')  +
+            (klynt.data.share.enableLinkedIn ? '<div class="modal-share-buttons-linkedin"></div>' : '')  +
             '</div>' +
             '</div>' +
             '<hr>' +

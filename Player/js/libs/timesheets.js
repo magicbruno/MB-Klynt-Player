@@ -643,6 +643,7 @@ function parseMediaElement(node) {
           .appendTo(renderer.$element.find('video'));
 
         renderer.dataRate = result.rate;
+        renderer.playCallback = result.playCallback;
       }
 
       createMediaElementPlayer();
@@ -677,6 +678,7 @@ function parseMediaElement(node) {
         sequence: renderer.sequence,
         renderer: renderer,
         startLanguage: 'en',
+        toggleCaptionsButtonWhenOnlyOne: true,
         translationSelector: false,
         enableKeyboard: false,
 // Klynt end

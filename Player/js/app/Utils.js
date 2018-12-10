@@ -72,8 +72,11 @@
             var openLink = 'http://twitter.com/intent/tweet?' +
                 'original_referer=' + url +
                 '&url=' + url +
-                '&via=' + 'klynt_app' +
                 '&text=' + twitterMessage;
+
+            if (!klynt.data.share.removeViaKlynt) {
+                openLink = openLink + '&via=klynt_app';
+            }
 
             openWindow(openLink);
         }
@@ -181,8 +184,8 @@ $(function() {
 
     function isWebkit() {
         var documentStyles = window.getComputedStyle(document.documentElement, '');
-        var stylesString = Array.prototype.slice.call(documentStyles).join('');
-        return stylesString.indexOf('-webkit-') != -1;
+        var stylesString = Array.prototype.slice.call(documentStyles).join(' ');
+        return /-webkit-/.test(userAgent) && !/msie|trident/.test(userAgent);
     }
 })(window.klynt);
 
@@ -226,11 +229,11 @@ $(function() {
 
     function getVideoDataFromAPI(video, callback) {
         var cacheKey = video.platform + '-' + video.externalId;
-        var cachedVideo = apiVideos[cacheKey];
+        var cachedData = apiVideos[cacheKey];
 
-        if (cachedVideo) {
+        if (cachedData) {
             if (callback) {
-                callback(selectURL(cachedVideo));
+                callback(selectURL(cachedData, video));
             }
         } else {
             var url = klynt.player.remoteVideosAPIURL;
@@ -246,7 +249,7 @@ $(function() {
             }).done(function (data) {
                 apiVideos[cacheKey] = data;
                 if (callback) {
-                    callback(selectURL(data));
+                    callback(selectURL(data, video));
                 }
             }).error(function (e) {
                 //console.log(e.responseText);
@@ -262,11 +265,11 @@ $(function() {
 
     function getCachedVideoData(video) {
         var cacheKey = video.platform + '-' + video.externalId;
-        var cachedVideo = apiVideos[cacheKey];
-        return cachedVideo ? selectURL(cachedVideo) : null;
+        var cachedData = apiVideos[cacheKey];
+        return cachedData ? selectURL(cachedData, video) : null;
     }
 
-    function selectURL(data) {
+    function selectURL(data, video) {
         var bandwidth = 0;
         if (klynt.bandwidth) {
             bandwidth = Math.round(klynt.bandwidth.bandwidth * 0.8);
@@ -293,6 +296,18 @@ $(function() {
         if (!selectedRate) {
             selectedRate = minBandwidth;
         }
+        var playCallback = null;
+        if (data.streamlikeBaseURL && data.streamlikeAccountId) {
+            playCallback = function () {
+                var statsURL = data.streamlikeBaseURL +
+                        '/secure/Medias/' + data.streamlikeAccountId +
+                        '/' + video.externalId +
+                        '/o.k?t=' + Date.now() + '&s=mp4';
+                //console.log('Stats URL: ', statsURL);
+                $.ajax({url: statsURL});
+            };
+        }
+
         /*
         console.log("\nVideo: ", data.name);
         console.log(klynt.bandwidth ? "Bandwidth(80%): " : "Local Bandwidth: ", bandwidth);
@@ -301,7 +316,8 @@ $(function() {
         */
         return {
             rate: selectedRate,
-            url: data.urls[selectedRate]
+            url: data.urls[selectedRate],
+            playCallback: playCallback
         };
     }
 

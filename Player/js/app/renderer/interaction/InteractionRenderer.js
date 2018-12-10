@@ -21,7 +21,7 @@
         },
 
         get reversible() {
-            return this._model.reversible && this.targetRenderer.active;
+            return this._model.reversible && (!this.targetRenderer || this.targetRenderer.active);
         },
 
         _targetRenderer: null,

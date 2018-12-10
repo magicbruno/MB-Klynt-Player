@@ -51,7 +51,8 @@
             },
             to: {
                 left: 0,
-                top: 0
+                top: 0,
+                easing: this.easing
             }
         };
         var target = {
@@ -61,7 +62,8 @@
             },
             to: {
                 left: 0,
-                top: 0
+                top: 0,
+                easing: this.easing
             }
         };
 

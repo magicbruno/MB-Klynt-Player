@@ -16,8 +16,7 @@
 
         this._$element.addClass('button');
 
-        if (buttonType.indexOf('arrow') !== -1) {
-
+        if (/btn-arrow/.test(buttonType)) {
             this._$element
                 .attr('id', 'container')
                 .addClass('btn-arrow_container');
@@ -55,12 +54,16 @@
             )
 
             this._updateLabelWidth();
-
-        } else {
+        } else if (/btn-/.test(buttonType)) {
             this._$element
-                .addClass('button')
                 .addClass(this.element.type)
                 .html(this.element.label);
+        } else {
+            $('<div>')
+                .addClass(this.element.type)
+                .addClass('klynt-button')
+                .html('<div class="label-container"><span>' + this.element.label + '</span></div>')
+                .appendTo(this._$element);
         }
 
     };
@@ -78,7 +81,6 @@
     };
 
     klynt.ButtonRenderer.prototype._updateLabelWidth = function () {
-
         var labelwidth;
         var containerWidth = this.element.width;
         var arrowWidth = this._$element.find('#arrow').width();

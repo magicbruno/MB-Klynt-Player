@@ -29,7 +29,7 @@
         },
 
         get controls() {
-            return !!this._data.player || this.syncMaster || klynt.utils.browser.iOS;
+            return !!this._data.player || klynt.utils.browser.iOS;
         },
 
         get loop() {
@@ -41,7 +41,7 @@
         },
 
         get subtitlesURL() {
-            return this._data.subtitles ? 'Medias/Subtitles/' + this._data.subtitlesURL : null;
+            return this._data.subtitlesURL ? 'Medias/Subtitles/' + this._data.subtitlesURL : null;
         }
     };
 

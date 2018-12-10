@@ -10,7 +10,8 @@
     };
 
     klynt.VideoRenderer.prototype = {
-        dataRate: 0
+        dataRate: 0,
+        playCallback: null
     };
 
     klynt.VideoRenderer.prototype._initDOM = function () {
@@ -19,7 +20,7 @@
     };
 
     klynt.VideoRenderer.prototype._createMediaElement = function () {
-        this._$mediaElement = $('<video webkit-playsinline>');
+        this._$mediaElement = $('<video webkit-playsinline playsinline>');
         klynt.MediaRenderer.prototype._createMediaElement.call(this);
     };
 
@@ -118,6 +119,15 @@
         };
         
         return css;
+    };
+
+    klynt.VideoRenderer.prototype._onPlay = function (event) {
+        klynt.MediaRenderer.prototype._onPlay.call(this, event);
+
+        if (this.playCallback) {
+            this.playCallback();
+            this.playCallback = null;
+        }
     };
 
     klynt.VideoRenderer.prototype = klynt.utils.mergePrototypes(klynt.MediaRenderer, klynt.VideoRenderer);

@@ -18,6 +18,10 @@
 
         get muted() {
             return muted;
+        },
+
+        get openingSequence() {
+            return !!transitionRenderer;
         }
     };
 
@@ -31,6 +35,8 @@
     function open(token) {
         if (typeof token === 'string' || token instanceof klynt.Sequence) {
             openSequence(klynt.sequences.find(token));
+        } else if (typeof token === 'undefined') {
+            window.history.back();
         } else if (token instanceof klynt.Link) {
             openLink(token);
         } else {
@@ -54,25 +60,24 @@
     }
 
     function openSequenceWithTouch(direction) {
-        var arrowButtons = klynt.sequenceContainer.currentSequence.buttons.filter(function (button) {
-            if (button.link && button.link.automaticTransition) {
-                return false;
-            }
-            switch (direction) {
-            case klynt.TouchTransitionRenderer.DIRECTION.UP:
-                return button.type === 'btn-arrow-bottom';
-            case klynt.TouchTransitionRenderer.DIRECTION.DOWN:
-                return button.type === 'btn-arrow-top';
-            case klynt.TouchTransitionRenderer.DIRECTION.LEFT:
-                return button.type === 'btn-arrow-right';
-            case klynt.TouchTransitionRenderer.DIRECTION.RIGHT:
-                return button.type === 'btn-arrow-left';
-            default:
-                return false;
-            }
-        });
+        var currentSequenceTime = klynt.sequenceContainer.currentRenderer.currentTime;
 
-        var selectedLink = arrowButtons.length === 1 ? arrowButtons[0].link : null;
+        var elements = klynt.sequenceContainer.currentSequence.elements.filter(function (element) {
+            if (!element.link || !element.link.transition || element.link.automaticTransition) {
+                return false;
+            }
+            if (element.link.transition.type && element.link.transition.type.toLowerCase().indexOf(direction) == -1) {
+                return false;
+            }
+
+            if (element.begin > currentSequenceTime || element.end < currentSequenceTime) {
+                //return false;
+            }
+
+            return true;
+        });
+        
+        var selectedLink = elements.length === 1 ? elements[0].link : null;
 
         return selectedLink && selectedLink.target && !selectedLink.overlay ? openSequence(selectedLink.target, {
             transition: {

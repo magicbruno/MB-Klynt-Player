@@ -299,6 +299,84 @@ body{
 }
 
 .mobile-miniplayer-button {
-	background: url(../editor/img/launch-app.svg) no-repeat center center fixed;
-	background-size: 80px 80px;
+	background-color: rgba(51, 51, 51, 0.4);
+	color: rgba(255, 255, 255, 1);
+	display: block;
+	position: absolute;
+	width: 100%;
+	height: 80px;
+	bottom: 0;
+}
+.mobile-miniplayer-download-button div {
+	opacity: 0.5;
+}
+.mobile-miniplayer-launch-button {
+	font-weight: bold;
+}
+.mobile-miniplayer-button-text span {
+	vertical-align: middle;
+	display: table-cell;
+}
+.mobile-miniplayer-button-text {
+	height: 100%;
+	left: 80px;
+	top: 0;
+	position: absolute;
+	text-transform: uppercase;
+	display: table;
+}
+.mobile-miniplayer-button-icon {
+	width: 40px;
+	height: 40px;
+	top: -webkit-calc(50% - 19px);
+	top: calc(50% - 19px);
+	position: relative;
+	margin: 0 20px;
+}
+.mobile-miniplayer-download-button .mobile-miniplayer-button-icon {
+	width: 20px;
+	height: 20px;
+	top: -webkit-calc(50% - 10px);
+	top: calc(50% - 10px);
+}
+.mobile-miniplayer-launch-button .mobile-miniplayer-button-icon {
+	border-radius: 4px;
+	background-color: red;
+}
+.mobile-miniplayer-launch-button .mobile-miniplayer-button-icon svg {
+	position: relative;
+	left: -webkit-calc(50% - 5px);
+	left: calc(50% - 5px);
+	top: -webkit-calc(50% - 8px);
+	top: calc(50% - 8px);
+}
+
+@media (max-width : 419px) { /* Portrait */
+	.mobile-miniplayer-download-button {
+		height: 64px;
+		bottom: 84px;
+	}
+	.mobile-miniplayer-download-button .mobile-miniplayer-button-icon {
+		margin: 0 30px;
+	}
+}
+@media (min-width : 420px) { /* Landscape */
+	.mobile-miniplayer-download-button {
+		width: 248px;
+	}
+	.mobile-miniplayer-download-button .mobile-miniplayer-button-text {
+		left: 60px;
+	}
+	.mobile-miniplayer-launch-button {
+		left: 252px;
+		right: 0;
+	}
+}
+@media (min-width : 420px) and (max-width : 520px) { /* Landscape iPhone 4 */
+	.mobile-miniplayer-download-button {
+		width: 200px;
+	}
+	.mobile-miniplayer-launch-button {
+		left: 204px;
+	}
 }

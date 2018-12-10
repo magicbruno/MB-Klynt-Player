@@ -69,6 +69,8 @@
 
         if (this.automatic) {
             $(this).trigger('validate.animation', this);
+        } else {
+            source.pause();
         }
     };
 
@@ -88,10 +90,25 @@
         }
     };
 
+    klynt.TransitionRenderer.prototype._notifyCancelComplete = function () {
+        this._discarded = this.target;
+        if (this.discarded) {
+            this.discarded.$element.removeClass('transition-running');
+        }
+
+        this._result = this.source;
+        if (this.result) {
+            this.result.$element.removeClass('transition-running');
+        }
+
+        $(this).trigger('cancel.animation', this);
+    };
+
     klynt.TransitionRenderer.prototype.prepareForTarget = function (source, target, callback) {
         if (source) {
             source.showSequenceLoader();
-            source._end();
+            //source._end();
+            source.pause();
         }
 
         var shouldPauseTarget = true;

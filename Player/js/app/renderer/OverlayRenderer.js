@@ -36,6 +36,18 @@
         get closeButtonBottom() {
             return this._params ? this._params.closeButtonBottom : klynt.data.general.overlayCloseButtonBottom;
         },
+
+        get closeButtonWidth() {
+            return this._params ? this._params.closeButtonWidth : klynt.data.general.overlayCloseButtonWidth;
+        },
+
+        get closeButtonHeight() {
+            return this._params ? this._params.closeButtonHeight : klynt.data.general.overlayCloseButtonHeight;
+        },
+
+        get closeButtonImage() {
+            return this._params ? this._params.closeButtonImage : klynt.data.general.overlayCloseButtonImage;
+        }
     };
 
     klynt.OverlayRenderer.prototype._initDOM = function () {
@@ -47,7 +59,7 @@
     };
 
     klynt.OverlayRenderer.prototype._addCloseButton = function () {
-        $('<div/>')
+        var $closeButton = $('<div/>')
             .addClass('overlay-close-button')
             .appendTo(this._$element)
             .on('click', klynt.sequenceManager.closeOverlay)
@@ -55,8 +67,14 @@
                 left: this.closeButtonLeft + 'px',
                 right: this.closeButtonRight + 'px',
                 top: this.closeButtonTop + 'px',
-                bottom: this.closeButtonBottom + 'px'
+                bottom: this.closeButtonBottom + 'px',
+                width: this.closeButtonWidth + 'px',
+                height: this.closeButtonHeight + 'px'
             });
+
+        if (this.closeButtonImage) {
+            $closeButton.css({backgroundImage: "url(" + this.closeButtonImage + ")"});
+        }
     };
 
     klynt.OverlayRenderer.prototype._end = function () {

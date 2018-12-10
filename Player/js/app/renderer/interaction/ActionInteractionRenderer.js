@@ -81,8 +81,9 @@
 		case 'unmute':
 			klynt.action.unmute(this.targetRenderer);
 			break;
-		case 'toggleMute':
-			klynt.action.toggleMute(this.targetRenderer);
+        case 'toggleMute':
+            klynt.action.toggleMute(this.targetRenderer);
+            break;
 		case 'showControls':
 			klynt.action.showControls(this.targetRenderer);
 			break;
@@ -201,7 +202,7 @@
 				klynt.animation.to(properties, $element);
 			} else {
 
-				var position = renderer.getImagePositionCSS({
+				position = renderer.getImagePositionCSS({
 					fitToWindow: true
 				});
 
@@ -243,7 +244,7 @@
 			if (renderer instanceof klynt.ShapeRenderer) {
 				klynt.animation.to(properties, $element);
 			} else {
-				var position = renderer.getImagePositionCSS({
+				position = renderer.getImagePositionCSS({
 					left: computedPositions.left,
 					right: computedPositions.right,
 					top: computedPositions.top,

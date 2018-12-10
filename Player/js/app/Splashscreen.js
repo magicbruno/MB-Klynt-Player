@@ -7,18 +7,25 @@
  * loads the remaining player files then initializes the player and removes the splashscreen.
  * */
 
+/**
+ * Modifiche MB gestione notifica ready 18/10/2018 righe 289 e 295-302
+ * */
+
+
 (function (klynt) {
 	var accessors = {
 		get finished() {
 			return finished;
-		}
+        }
 	};
 
 	klynt.getModule('splashscreen').expose(accessors, init);
 
 	var finished = false;
 	var $splashscreen, $logo, loader;
-	var count = 0;
+    var count = 0;
+
+
 
 	var playerCssFiles = [
 		'Player/js/libs/jquery-ui-1.10.3.custom/css/ui-lightness/jquery-ui-1.10.3.custom.css',
@@ -45,7 +52,8 @@
 		'Player/js/libs/mediaelement/mediaelement-and-player.js',
 		'Player/js/libs/timesheets.js',
 		'Player/js/libs/jquery.autoellipsis.js',
-		'Player/js/libs/sigmajs/sigma.min.js'
+		'Player/js/libs/sigmajs/sigma.min.js',
+		'Player/js/libs/jquery.mousewheel.min.js'
 	];
 
 	var playerJSFiles = [
@@ -169,7 +177,9 @@
 		setTimeout(function () {
 			hideSplashscreen();
 		}, 500);
-	}
+    }
+
+
 
 	function loadPlayer() {
 		var referenceTime = new Date().getTime();
@@ -273,11 +283,23 @@
 					}
 
 					$(document).off('fullscreenchange mozfullscreenchange webkitfullscreenchange MSFullscreenChange', onFullscreenChange);
-					$(this).remove();
+                    $(this).remove();
+
+                    // Aggiunta MB Gestione ready
+                    onReady();
 				});
 			});
 		}
-	}
+    }
+
+    /**
+     * Aggiunta MB Gestione ready
+     * */
+    function onReady() {
+        klynt.readyCallbacks.forEach(function (callback) {
+            callback();
+        });
+    }
 
 	function onFullscreenChange() {
 		if ((document.fullscreen == false) || (document.mozFullScreen === false) || (document.webkitIsFullScreen == false)) {
@@ -288,5 +310,5 @@
 		} else if (!finished) {
 			$splashscreen.show();
 		}
-	}
+    }
 })(window.klynt);

@@ -3,6 +3,9 @@
  * Licensed under GNU GPL
  * http://www.klynt.net
  * */
+/**
+ * Aggiunte MB 18/10/2018 righe: 87-100
+ * */
 
 // Klynt namespace.
 window.klynt = {};
@@ -81,6 +84,23 @@ klynt.loadMobileMiniPlayer = function () {
     });
 }
 
+/**
+* Aggiunta MB Gestione ready
+* Array che contiene la lista delle chiamate
+* */
+klynt.readyCallbacks = [];
+
+/**
+* Aggiunta MB - Gestione ready
+* @param {function} callback - Funzione da chiamare quando il player è pronto
+* */
+klynt.ready = function (callback) {
+    if ($.isFunction(callback))
+        this.readyCallbacks.push(callback);
+};
+
+
+
 // Launches the miniplayer or the splashscreen according to params set from the url.
 $(function (klynt) {
     klynt.params = setParamsFromURL({
@@ -92,7 +112,7 @@ $(function (klynt) {
 
     if (isiPhoneSafari()) {
         LazyLoad.js(['miniPlayerData.js'], function () {
-            if (klynt.miniPlayerData && klynt.miniPlayerData.redirectToMobileApp) {
+            if (shouldRedirectToApp()) {
                 klynt.loadMobileMiniPlayer();
             } else {
                 continueLoading();
@@ -116,6 +136,33 @@ $(function (klynt) {
         var userAgent = navigator.userAgent.toLowerCase();
 
         return iOSRegex.test(userAgent) && !inAppRegex.test(userAgent);
+    }
+
+    function shouldRedirectToApp() {
+        if (!klynt.miniPlayerData || !isiPhoneSafari()){
+            return false;
+        }
+
+        if (klynt.miniPlayerData.redirectToMobileApp == "never" || klynt.miniPlayerData.redirectToMobileApp == "false") {
+            return false;
+        }
+
+        if (klynt.miniPlayerData.redirectToMobileApp == "always" || klynt.miniPlayerData.redirectToMobileApp == "true") {
+            return true;
+        }
+
+        // Outputs a float representing the iOS version if user is using an iOS browser i.e. iPhone, iPad
+        // Possible values include:
+        // 3 - v3.0
+        // 4.0 - v4.0
+        // 4.14 - v4.1.4
+        // false - Not iOS   
+        var iOS = parseFloat(
+            ('' + (/CPU.*OS ([0-9_]{1,5})|(CPU like).*AppleWebKit.*Mobile/i.exec(navigator.userAgent) || [0,''])[1])
+            .replace('undefined', '3_2').replace('_', '.').replace('_', '')
+        ) || false;
+
+        return iOS && iOS < 10;
     }
 
     function setParamsFromURL(params) {

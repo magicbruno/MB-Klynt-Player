@@ -7,9 +7,10 @@
  * */
 
 (function (klynt) {
-    var scrollTimer = true;
-    var scrollTimerDelay = 1000;
-    var minimumMouseWheelDelta = 20;
+    var minimumMouseWheelDelta = 1;
+    var panTransition = null;
+    var hammer = null;
+    var lastOpenTime = undefined;
 
     var accessors = {
         get keyboardNavigationEnabled() {
@@ -18,93 +19,146 @@
 
         get scrollNavigationEnabled() {
             return klynt.data.advanced && klynt.data.advanced.enableScrollNavigation;
+        },
+
+        get swipeNavigationEnabled() {
+            return klynt.data.advanced && klynt.data.advanced.enableSwipeNavigation;
+        },
+
+        get panNavigationEnabled() {
+            return klynt.data.advanced && klynt.data.advanced.enablePanNavigation;
         }
     };
 
     klynt.getModule('events', accessors).expose(init, move);
 
     function init() {
-        document.addEventListener('keydown', onKeyDown);
+        $(document).keydown(function(event) {
+            if (event.keyCode == 32) {
+                klynt.player.togglePlayPause();
+            } else if (klynt.events.keyboardNavigationEnabled) {
+                var direction = getDirectionFromKeyCode(event.keyCode);
+                if (direction) {
+                    move(direction, 'keyboard');
+                }
+            }
+        });
 
         if (this.scrollNavigationEnabled) {
-            document.addEventListener('mousewheel', onMouseWheel);
-            document.addEventListener('DOMMouseScroll', onMouseWheel);
+            $(document).mousewheel(function(event) {
+                var delta = event.deltaY;
+                if (Math.abs(delta) >= minimumMouseWheelDelta) {
+                    move(delta < 0 ? 'up' : 'down', 'scroll');
+                }
+            });
         }
-    }
 
-    function onKeyDown(event) {
-        if (event.keyCode == 32) {
-            klynt.player.togglePlayPause();
-        } else if (this.keyboardNavigationEnabled) {
-            var direction = getDirectionFromKeyCode(event.keyCode);
-            if (direction) {
-                move(direction, 'keyboard');
-            }
+        if (this.swipeNavigationEnabled) {
+            hammer = hammer || new Hammer(klynt.sequenceContainer.$element[0]);
+
+            hammer.get('swipe').set({
+                direction: Hammer.DIRECTION_ALL,
+                velocity: 0.1
+            });
+            hammer.on("swipe", function (event) {
+                event.preventDefault();
+
+                var direction = getDirectionGesture(event.direction);
+                if (direction) {
+                    move(direction, 'swipe');
+                }
+            });
         }
-    }
 
-    function onMouseWheel(event) {
-        var delta = event.wheelDeltaY || event.wheelDelta;
+        if (this.panNavigationEnabled) {
+            hammer = hammer || new Hammer(klynt.sequenceContainer.$element[0]);
 
-        if (Math.abs(delta) > minimumMouseWheelDelta) {
-            move(delta < 0 ? 'right' : 'left', 'scroll');
+            hammer.get('pan').set({
+                direction: Hammer.DIRECTION_ALL
+            });
+            hammer.on("pan panend pancancel", function (event) {
+                event.preventDefault();
+
+                if (event.type == "pan") {
+                    if (!panTransition && !klynt.sequenceManager.openingSequence) {
+                        panTransition = klynt.sequenceManager.openSequenceWithTouch(getDirectionGesture(event.direction));
+                    }
+                    panTransition && panTransition.dragendOffset(event.deltaX * 2, event.deltaY * 2);
+                } else {
+                    panTransition && panTransition.dragend(event.deltaX * 2, event.deltaY * 2, Math.abs(event.velocity));
+                    panTransition = null;
+                }
+            });
         }
     }
 
     function move(direction, moveType, closeMenu) {
+        if (klynt.sequenceManager.openingSequence || (!closeMenu && klynt.menu.isOpen)) {
+            return;
+        }
 
-        if (!scrollTimer || (!closeMenu && klynt.menu.isOpen)) {
+        var currentTime = Date.now() / 1000;
+        if (klynt.events.lastOpenTime !== undefined && klynt.events.lastOpenTime + 2 > currentTime) {
             return;
         }
 
         var selectedLink = findLinkInDirection(direction);
-
         if (selectedLink) {
+            klynt.events.lastOpenTime = currentTime;
             klynt.player.open(selectedLink);
-
-            if (moveType == 'scroll') {
-                scrollTimer = false;
-                klynt.utils.callLater(function () {
-                    scrollTimer = true
-                }, scrollTimerDelay);
-            }
         }
     }
 
     function getDirectionFromKeyCode(keyCode) {
         switch (keyCode) {
         case 37:
-            return 'left';
-        case 38:
-            return 'top';
-        case 39:
             return 'right';
+        case 38:
+            return 'down';
+        case 39:
+            return 'left';
         case 40:
-            return 'bottom';
+            return 'up';
+        default:
+            return null;
+        }
+    }
+
+    function getDirectionGesture(direction) {
+        switch (direction) {
+        case 2:
+            return 'left';
+        case 4:
+            return 'right';
+        case 8:
+            return 'up';
+        case 16:
+            return 'down';
         default:
             return null;
         }
     }
 
     function findLinkInDirection(direction) {
-        var arrowButtons = findArrowsWithDirection('btn-arrow-' + direction);
-        var selectedLink = arrowButtons.length === 1 ? arrowButtons[0].link : null;
+        var elements = findArrowsWithDirection(direction);
+        var selectedLink = elements.length === 1 ? elements[0].link : null;
 
         return selectedLink && selectedLink.target && !selectedLink.overlay ? selectedLink : null;
     }
 
     function findArrowsWithDirection(arrowDirection) {
-        return klynt.sequenceContainer.currentSequence.buttons.filter(function (button) {
-            if (button.link && button.link.automaticTransition) {
+        var currentSequenceTime = klynt.sequenceContainer.currentRenderer.currentTime;
+
+        return klynt.sequenceContainer.currentSequence.elements.filter(function (element) {
+            if (!element.link || !element.link.transition || element.link.automaticTransition) {
                 return false;
             }
-            if (button.type !== arrowDirection) {
+            if (element.link.transition.type && element.link.transition.type.toLowerCase().indexOf(arrowDirection) == -1) {
                 return false;
             }
 
-            var currentSequenceTime = klynt.sequenceContainer.currentRenderer.currentTime;
-            if (button.begin > currentSequenceTime || button.end < currentSequenceTime) {
-                return false;
+            if (element.begin > currentSequenceTime || element.end < currentSequenceTime) {
+                //return false;
             }
 
             return true;

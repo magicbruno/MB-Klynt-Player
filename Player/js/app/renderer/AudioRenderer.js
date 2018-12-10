@@ -105,11 +105,7 @@
                 klynt.MediaRenderer.prototype.pause.call(this);
             }
         } else {
-            if (sequenceEnded) {
-                klynt.action.volume(this, 0, 3);
-            } else {
-                klynt.MediaRenderer.prototype.pause.call(this);
-            }
+            klynt.MediaRenderer.prototype.pause.call(this);
         }
     };
 

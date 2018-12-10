@@ -66,6 +66,7 @@
                     type: 'video/mp4'
                 }];
                 this.dataRate = result.rate;
+                this.playCallback = result.playCallback;
             }
         }
 

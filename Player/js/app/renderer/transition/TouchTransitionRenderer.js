@@ -57,27 +57,27 @@
 
     klynt.TouchTransitionRenderer.prototype.dragend = function (deltaX, deltaY) {
         var progress = this._getProgress(deltaX, deltaY);
-        var validateTransition = (progress.x + progress.y) > 0.5;
-        var duration = this.duration * (progress.x + progress.y);
+        progress = progress.x + progress.y;
+        var validateTransition = progress > 0.5;
 
         if (validateTransition) {
-            if (this.source) {
-                this.source.$element.animate(this.animation.source.to, duration, this.easing);
-            }
-
-            if (this.target) {
-                this.target.$element.animate(this.animation.target.to, duration, this.easing, this._notifyComplete.bind(this));
-            }
-
             $(this).trigger('validate.animation', this);
+
+            if (this.source) {
+                this.source._end();
+                klynt.animation.to({duration: this.duration * (1 - progress) / 1000, properties: this.animation.source.to}, this.source.$element);
+            }
+
+            this.animation.target.to.onComplete = this._notifyComplete.bind(this);
+            klynt.animation.to({duration: this.duration * (1 - progress) / 1000, properties: this.animation.target.to}, this.target.$element);
         } else {
             if (this.source) {
-                this.source.$element.animate(this.animation.source.from, this.duration - duration, this.easing);
+                this.source.play();
+                klynt.animation.to({duration: this.duration * progress / 1000, properties: this.animation.source.from}, this.source.$element);
             }
 
-            if (this.target) {
-                this.target.$element.animate(this.animation.target.from, this.duration - duration, this.easing, this._notifyCancelComplete.bind(this));
-            }
+            this.animation.target.from.onComplete = this._notifyCancelComplete.bind(this);
+            klynt.animation.to({duration: this.duration * progress / 1000, properties: this.animation.target.from}, this.target.$element); 
         }
     };
 
@@ -123,8 +123,8 @@
     };
 
     klynt.TouchTransitionRenderer.prototype._getAnimationDescription = function () {
-        var width = klynt.sequenceContainer.unscaledWidth;
-        var height = klynt.sequenceContainer.unscaledHeight;
+        var width = klynt.sequenceContainer.$fullscreenWrapper.width();
+        var height = klynt.sequenceContainer.$fullscreenWrapper.height();
         var source = {
             from: {
                 left: 0,

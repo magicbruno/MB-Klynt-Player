@@ -552,11 +552,17 @@
 /* Start: Track (Captions and Chapters) */
 .mejs-controls .mejs-captions-button {
     position: relative;
+    margin-right: 5px;
 }
 
 .mejs-controls .mejs-captions-button button {
+    background-position: -48px -16px;
+}
+
+.mejs-controls .mejs-captions-button.mejs-captions-enabled button {
     background-position: -48px 0;
 }
+
 .mejs-controls .mejs-captions-button .mejs-captions-selector {
     visibility: hidden;
     position: absolute;

@@ -71,7 +71,7 @@
             .attr('id', 'fullscreen-wrapper')
             .addClass('fullscreen-wrapper')
             .css('width', klynt.player.scaleToFullWindow ? '100%' : this.width)
-            .css('height', klynt.player.scaleToFullWindow ? calc + '(100% - ' + klynt.footer.height + 'px)' : this.height)
+            .css('height', klynt.player.scaleToFullWindow ? '100%' : this.height)
             .appendTo($element);
 
         resetDimensions();
@@ -79,38 +79,6 @@
         if (watermark && watermark.enabled) {
             $element.append('<img src="Player/css/editor/img/watermark.png" class="watermark watermark-' + watermark.position + '"></img>');
             $element.hammer().on('click', '.watermark', actionWatermark);
-        }
-
-        var touchEnabled = false;
-        var touchTransition;
-
-        if (touchEnabled) {
-            $element.hammer({
-                drag_lock_to_axis: true
-            }).on("drag", function (event) {
-                if (!touchTransition) {
-                    touchTransition = klynt.sequenceManager.openSequenceWithTouch(event.gesture.direction);
-                }
-
-                if (touchTransition) {
-                    touchTransition.dragendOffset(event.gesture.deltaX, event.gesture.deltaY);
-                }
-
-                event.preventDefault();
-                event.gesture.preventDefault();
-            });
-
-            $element.hammer({
-                drag_lock_to_axis: true
-            }).on("dragend", function (event) {
-                if (touchTransition) {
-                    touchTransition.dragend(event.gesture.deltaX, event.gesture.deltaY);
-                    touchTransition = null;
-                }
-
-                event.preventDefault();
-                event.gesture.preventDefault();
-            });
         }
     }
 

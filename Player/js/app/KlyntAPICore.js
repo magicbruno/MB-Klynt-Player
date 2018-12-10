@@ -106,3 +106,8 @@ APIHandler.defineCommand('openLogoLink', function () {
 		window.open(klynt.data.footer.logoLink, '_blank');
 	}
 });
+
+/* Aggiunta MB*/
+APIHandler.defineCommand('back', function () {
+    window.history.back();
+});
