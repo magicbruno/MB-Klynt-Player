@@ -2,10 +2,21 @@
 .DS_Store
 
 .project
+
 .vs/**
+
 assets/**
+
 Medias/**
+
 Menu-responsive.klynt
+
 Autosave/**
+
 data.js
+
 Player/css/editor/**
+
+miniPlayerData.js
+
+Resources/**
