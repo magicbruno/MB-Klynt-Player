@@ -1,27 +1,61 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <title>{{PROJECT_TITLE}}</title>
-    
+
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
 
-    <meta name="description" content="{{PROJECT_DESCRIPTION}}"/>
-    <meta name="keywords" content="{{PROJECT_KEYWORDS}}"/>
-    <meta name="author" content="{{PROJECT_AUTHOR}}"/>
-    <meta property="og:title" content="{{OG_TITLE}}"/>
-    <meta property="og:type" content="website"/>
-    <meta property="og:url" content=""/>
-    <meta property="og:description" content="{{OG_DESCRIPTION}}"/>
-    <meta property="og:image" content="{{OG_IMAGE}}"/>
+    <meta name="description" content="{{PROJECT_DESCRIPTION}}" />
+    <meta name="keywords" content="{{PROJECT_KEYWORDS}}" />
+    <meta name="author" content="{{PROJECT_AUTHOR}}" />
+    <meta property="og:title" content="{{OG_TITLE}}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="" />
+    <meta property="og:description" content="{{OG_DESCRIPTION}}" />
+    <meta property="og:image" content="{{OG_IMAGE}}" />
 
-    <script type="text/javascript" src="Player/js/libs/jquery-1.10.2.min.js"></script>
+    <!--<script type="text/javascript" src="Player/js/libs/jquery-1.10.2.min.js"></script>-->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--<script src="https://code.jquery.com/jquery-migrate-3.0.1.min.js"
+            integrity="sha256-F0O1TmEa4I8N24nY0bya59eP6svWcshqX1uzwaWC4F4="
+            crossorigin="anonymous"></script>-->
+    <script>window.jQuery || document.write('<script src="assets\/jquery\/jquery.min.js"><\/script>')</script>
     <script type="text/javascript" src="Player/js/libs/lazyload.js"></script>
     <script type="text/javascript" src="Player/js/klynt.js"></script>
+    <!--<script src="Player/js/api/KlyntAPI2.js"></script>-->
 </head>
 <body>
     <div id="player-container" class="player-container">
-        <div id="player" class="player"></div>
+        <div id="player" class="player" data-location-hash="self"></div>
     </div>
+    <script>
+        (function (win, klynt) {
+            const READY = 'KlyntReady',
+                PROGRESS = 'KlyntLoadingProgress';
+            klynt.ready(function () {
+                data = {};
+                data.header = {
+                    id: 0,
+                    destination: 'parent',
+                    type: READY
+                };
+
+                window.parent.postMessage(JSON.stringify(data), '*');
+            });
+            klynt.progress(function (progress) {
+                data = {};
+                data.header = {
+                    id: 0,
+                    destination: 'parent',
+                    type: PROGRESS
+                };
+                data.value = progress;
+
+                window.parent.postMessage(JSON.stringify(data), '*');
+            });
+        })(window, window.klynt)
+    </script>
+    
 </body>
-</html>
+</html>>

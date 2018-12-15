@@ -111,6 +111,24 @@
 }
 
 @font-face {
+	font-family: Overpass Mono;
+	font-weight: bold;
+	font-style: normal;
+	src: url('fonts/overpass-mono-v3-latin-700.eot');
+	src: url('fonts/overpass-mono-v3-latin-700.eot?#iefix') format('embedded-opentype'),
+	     url('fonts/overpass-mono-v3-latin-700.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: Overpass Mono;
+	font-weight: normal;
+	font-style: normal;
+	src: url('fonts/overpass-mono-v3-latin-regular.eot');
+	src: url('fonts/overpass-mono-v3-latin-regular.eot?#iefix') format('embedded-opentype'),
+	     url('fonts/overpass-mono-v3-latin-regular.ttf') format('truetype');
+}
+
+@font-face {
 	font-family: Quicksand;
 	font-weight: bold;
 	font-style: normal;
@@ -183,21 +201,21 @@
 }
 
 @font-face {
-	font-family: Crimson Text;
-	font-weight: roman;
-	font-style: normal;
-	src: url('fonts/CrimsonText-Roman.eot');
-	src: url('fonts/CrimsonText-Roman.eot?#iefix') format('embedded-opentype'),
-	     url('fonts/CrimsonText-Roman.ttf') format('truetype');
-}
-
-@font-face {
 	font-family: Dancing Script;
 	font-weight: bold;
 	font-style: normal;
 	src: url('fonts/DancingScript-Bold.eot');
 	src: url('fonts/DancingScript-Bold.eot?#iefix') format('embedded-opentype'),
 	     url('fonts/DancingScript-Bold.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: Crimson Text;
+	font-weight: roman;
+	font-style: normal;
+	src: url('fonts/CrimsonText-Roman.eot');
+	src: url('fonts/CrimsonText-Roman.eot?#iefix') format('embedded-opentype'),
+	     url('fonts/CrimsonText-Roman.ttf') format('truetype');
 }
 
 @font-face {
@@ -264,15 +282,6 @@
 }
 
 @font-face {
-	font-family: Lobster Two;
-	font-weight: normal;
-	font-style: italic;
-	src: url('fonts/LobsterTwo-Italic.eot');
-	src: url('fonts/LobsterTwo-Italic.eot?#iefix') format('embedded-opentype'),
-	     url('fonts/LobsterTwo-Italic.ttf') format('truetype');
-}
-
-@font-face {
 	font-family: Simonetta;
 	font-weight: normal;
 	font-style: italic;
@@ -288,5 +297,14 @@
 	src: url('fonts/Simonetta-Regular.eot');
 	src: url('fonts/Simonetta-Regular.eot?#iefix') format('embedded-opentype'),
 	     url('fonts/Simonetta-Regular.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: Lobster Two;
+	font-weight: normal;
+	font-style: italic;
+	src: url('fonts/LobsterTwo-Italic.eot');
+	src: url('fonts/LobsterTwo-Italic.eot?#iefix') format('embedded-opentype'),
+	     url('fonts/LobsterTwo-Italic.ttf') format('truetype');
 }
 

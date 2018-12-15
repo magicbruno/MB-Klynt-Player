@@ -251,7 +251,7 @@ $(function() {
                 if (callback) {
                     callback(selectURL(data, video));
                 }
-            }).error(function (e) {
+            }).fail (function (e) {
                 //console.log(e.responseText);
             });
         }
@@ -324,7 +324,7 @@ $(function() {
     function replaceSource(source, baseURL, defaultBaseURL) {
         if (source && baseURL && baseURL != defaultBaseURL) {
             var regrex = new RegExp('^' + defaultBaseURL);
-            if ($.isArray(source)) {
+            if ($.isArray(source)) {
                 return source.map(function (item) {
                     return item ? {
                         src: item.src ? item.src.replace(regrex, baseURL) : item.src,

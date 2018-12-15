@@ -3,13 +3,13 @@
 
 .project
 
-#.vs/**
+.vs/**
 
 assets/**
 
-#Medias/**
+Medias/**
 
-#Menu-responsive.klynt
+Menu-responsive.klynt
 
 Autosave/**
 
@@ -20,3 +20,5 @@ Player/css/editor/**
 miniPlayerData.js
 
 Resources/**
+
+External-menu.html

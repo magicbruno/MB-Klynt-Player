@@ -14,6 +14,11 @@ var load = function (text) {
 	setText(text);
 };
 
+var center = function () {
+	container.style.left = ((window.innerWidth - getWidth()) / 2) + 'px';
+	container.style.top = ((window.innerHeight - getHeight()) / 2) + 'px';
+};
+
 var getWidth = function () {
 	return getStyle("width") + getStyle("paddingLeft") + getStyle("paddingRight");
 };

@@ -1,0 +1,120 @@
+/*  This CSS file is CUSTOMIZABLE */
+/*  Copy-paste and modify the classes you need to modify (files from Player/css/player), this will overwrite the default values */
+/*  For more informations, you can check our GITHUB @ https://github.com/Klynt/Klynt-Player/wiki/CSSArchitecture */
+
+.iframe iframe, .iframe button {
+	width: 100%;
+	height: 100%;
+}
+
+.red-hover:hover {
+	-webkit-filter: invert(100%) brightness(40%) sepia(100%) hue-rotate(-50deg) saturate(600%) contrast(0.8);
+	        filter: invert(100%) brightness(40%) sepia(100%) hue-rotate(-50deg) saturate(600%) contrast(0.8);
+}
+
+@-webkit-keyframes flash {
+	0% {
+		-webkit-transform: scale(1);
+		        transform: scale(1);
+	}
+
+	50% {
+		-webkit-transform: scale(1.15);
+		        transform: scale(1.15);
+	}
+
+	100% {
+		-webkit-transform: scale(1);
+		        transform: scale(1);
+	}
+}
+
+@keyframes flash {
+	0% {
+		-webkit-transform: scale(1);
+		        transform: scale(1);
+	}
+
+	50% {
+		-webkit-transform: scale(1.15);
+		        transform: scale(1.15);
+	}
+
+	100% {
+		-webkit-transform: scale(1);
+		        transform: scale(1);
+	}
+}
+
+@-webkit-keyframes backandforth {
+	0% {
+		-webkit-transform: translateX(0);
+		        transform: translateX(0);
+	}
+
+	50% {
+		-webkit-transform: translateX(10px);
+		        transform: translateX(10px);
+	}
+
+	100% {
+		-webkit-transform: translateX(0);
+		        transform: translateX(0);
+	}
+}
+
+@keyframes backandforth {
+	0% {
+		-webkit-transform: translateX(0);
+		        transform: translateX(0);
+	}
+
+	50% {
+		-webkit-transform: translateX(10px);
+		        transform: translateX(10px);
+	}
+
+	100% {
+		-webkit-transform: translateX(0);
+		        transform: translateX(0);
+	}
+}
+
+@-webkit-keyframes rotate {
+	0% {
+		-webkit-transform: rotate(0);
+		        transform: rotate(0)
+	}
+
+	100% {
+		-webkit-transform: rotate(360deg);
+		        transform: rotate(360deg)
+	}
+}
+
+@keyframes rotate {
+	0% {
+		-webkit-transform: rotate(0);
+		        transform: rotate(0)
+	}
+
+	100% {
+		-webkit-transform: rotate(360deg);
+		        transform: rotate(360deg)
+	}
+}
+
+.flashing {
+	-webkit-animation: flash ease-in-out 1s infinite;
+	        animation: flash ease-in-out 1s infinite;
+}
+
+.backandforth {
+	-webkit-animation: backandforth ease-in-out .7s infinite;
+	        animation: backandforth ease-in-out .7s infinite;
+}
+
+.rotate {
+	-webkit-animation: rotate .7s infinite;
+	        animation: rotate .7s infinite;
+}
